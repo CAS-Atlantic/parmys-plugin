@@ -1,0 +1,209 @@
+# Copyright (C) 2020-2021  The SymbiFlow Authors.
+#
+# Use of this source code is governed by a ISC-style
+# license that can be found in the LICENSE file or at
+# https://opensource.org/licenses/ISC
+#
+# SPDX-License-Identifier: ISC
+
+name: 'test'
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+
+  test:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        os: [ ubuntu, windows, macos ]
+    runs-on: ${{ matrix.os }}-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+
+    - name: Configure git
+      shell: bash
+      run: |
+        git config --global core.autocrlf input
+        git config --global core.symlinks true
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Make env
+      run: |
+        cd test
+        make env
+        make env-info
+
+    - name: Make example-command
+      run: |
+        cd test
+        make example-command
+
+    - name: Make test-command
+      run: |
+        cd test
+        make test-command
+
+
+# https://www.debian.org/releases/
+# http://releases.ubuntu.com/
+  debian:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        os:
+          - debian:buster
+          - debian:bullseye
+          - debian:sid
+          - ubuntu:14.04
+          - ubuntu:16.04
+          - ubuntu:18.04
+          - ubuntu:20.04
+          - ubuntu:20.10
+    container: ${{ matrix.os }}
+    steps:
+
+    - name: Install dependencies
+      run: |
+        apt update -qq
+        apt install -y make wget git
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Make env
+      run: |
+        cd test
+        make env
+        make env-info
+
+    - name: Make example-command
+      run: |
+        cd test
+        make example-command
+
+    - name: Make test-command
+      run: |
+        cd test
+        make test-command
+
+
+# https://fedoraproject.org/wiki/Releases
+  fedora:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        os:
+          - 32
+          - 33
+          - 34
+    container: fedora:${{ matrix.os }}
+    steps:
+
+    - name: Install dependencies
+      run: |
+        dnf update -y
+        dnf install -y make wget git which
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Make env
+      run: |
+        cd test
+        make env
+        make env-info
+
+    - name: Make example-command
+      run: |
+        cd test
+        make example-command
+
+    - name: Make test-command
+      run: |
+        cd test
+        make test-command
+
+
+  centos:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        os:
+          - 7
+          - 8
+    container: centos:${{ matrix.os }}
+    steps:
+
+    - name: Install dependencies
+      run: |
+        yum update -y
+        yum install -y make wget git which
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Make env
+      run: |
+        cd test
+        make env
+        make env-info
+
+    - name: Make example-command
+      run: |
+        cd test
+        make example-command
+
+    - name: Make test-command
+      run: |
+        cd test
+        make test-command
+
+
+  archlinux:
+    runs-on: ubuntu-latest
+    container: archlinux
+    steps:
+
+    - name: Install dependencies
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S make wget git which --noconfirm
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Make env
+      run: |
+        cd test
+        make env
+        make env-info
+
+    - name: Make example-command
+      run: |
+        cd test
+        make example-command
+
+    - name: Make test-command
+      run: |
+        cd test
+        make test-command
