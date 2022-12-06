@@ -1,4 +1,0 @@
-# Tools using in testing.
-tox
-flake8
-pytest
