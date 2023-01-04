@@ -1,12 +1,16 @@
-# Default Linux style
-BasedOnStyle: LLVM
-IndentWidth: 4
-UseTab: Never
-BreakBeforeBraces: Linux
-AllowShortIfStatementsOnASingleLine: false
-IndentCaseLabels: false
+# Editor config file, see http://editorconfig.org/
+root = true
 
-# From CodingReadme
-TabWidth: 4
-ContinuationIndentWidth: 2
-ColumnLimit: 150
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{h,cc,tcl}]
+indent_style = space
+indent_size = 4
+
+[*.{v,sv}]
+indent_style = space
+indent_size = 2
