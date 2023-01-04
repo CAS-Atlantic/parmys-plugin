@@ -8,11 +8,12 @@ It is highly recommended to utilize this plugin through the [Verilog to Routing 
 
 ## Build as a plugin
 
-- Clone, make, and install [Yosys](https://github.com/YosysHQ/yosys)
+- Clone, make, and install [Yosys](https://github.com/YosysHQ/yosys.git)
+- Clone, make, and install [VTR](https://github.com/verilog-to-routing/vtr-verilog-to-routing.git)
 - Build and install Parmys
 
 ```makefile
-make
+make VTR_INSTALL_DIR=`path to VTR build/install directory` plugins -j`nproc`
 sudo make install
 ```
 
@@ -66,7 +67,7 @@ parmys -a simple_vtr_fpga_architecture.xml
 - [Set up the Environment](https://docs.verilogtorouting.org/en/latest/BUILDING/#setting-up-your-environment)
 - Build with the following command to enable both Yosys as the frontend and Parmys as the partial mapper:
 ```makefile
-make CMAKE_PARAMS="-DWITH_YOSYS=on -DYOSYS_PARMYS_PLUGIN=ON"
+make CMAKE_PARAMS="-DWITH_YOSYS=on -DYOSYS_PARMYS_PLUGIN=on"
 ```
 - Run vtr flow
 
